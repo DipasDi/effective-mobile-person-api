@@ -1,0 +1,128 @@
+basePath: /
+definitions:
+  controller.UpdatePersonInput:
+    properties:
+      age:
+        type: integer
+      gender:
+        type: string
+      name:
+        type: string
+      nationality:
+        type: string
+      patronymic:
+        type: string
+      surname:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API для работы с данными людей
+  title: Effective Mobile API
+  version: "1.0"
+paths:
+  /api/getPeople:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает список людей с пагинацией и фильтрацией
+      parameters:
+      - default: 1
+        description: Номер страницы
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Лимит на страницу
+        in: query
+        name: limit
+        type: integer
+      - description: Фильтр по имени
+        in: query
+        name: name
+        type: string
+      - description: Фильтр по фамилии
+        in: query
+        name: surname
+        type: string
+      - description: Фильтр по возрасту
+        in: query
+        name: age
+        type: integer
+      - description: Фильтр по полу
+        in: query
+        name: gender
+        type: string
+      - description: Фильтр по национальности
+        in: query
+        name: nationality
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Получить список людей
+      tags:
+      - persons
+  /api/people/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет данные человека по ID
+      parameters:
+      - description: ID человека
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Удалить данные человека
+      tags:
+      - persons
+  /api/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Обновляет данные человека по ID
+      parameters:
+      - description: ID человека
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Обновленные данные
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/controller.UpdatePersonInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Обновить данные человека
+      tags:
+      - persons
+swagger: "2.0"
